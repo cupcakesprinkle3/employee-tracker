@@ -77,7 +77,20 @@ const promptUser = () => {
                 });
             }
             if (choicesData.action === 'View all employees') {
-                db.query(`SELECT * FROM employee`, (err, row) => {
+                db.query(`SELECT 
+                id,
+                first_name,
+                last_name,
+                manager_id,
+                role_title,
+                salary,
+                dept_name
+            FROM
+                employee
+            INNER JOIN
+                roles ON roles.role_id = employee.emp_role_id
+            INNER JOIN
+                department ON department.dept_id = roles.department_id`, (err, row) => {
                     if (err) {
                         console.log(err);
                     }
