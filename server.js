@@ -29,7 +29,7 @@ const db = mysql.createConnection(
         // Your MySQL username,
         user: 'root',
         // Your MySQL password
-        password: '',
+        password: 'Sutrotowerpw123!',
         database: 'roster'
     },
     console.log('Connected to the roster database.')
@@ -132,31 +132,64 @@ const promptUser = () => {
             if (choicesData.action === 'Add a role') {
                 inquirer.prompt([
                     {
-                        type: 'input',
-                        name: 'add_role_title',
-                        message: 'Please provide the new role title. (Required)',
-                        validate: roleInput => {
-                            if (roleInput) {
-                                return true;
-                            } else {
-                                console.log('Please enter the role title!');
-                                return false;
-                            }
-                        }
+                        type: 'list',
+                        name: 'choose_department',
+                        message: 'Which department does this role belong to?',
+                        // CREDIT TO CLASSMATE MCC FOR THIS INSPIRATION
+                        // choices: answers => {
+                        //     const departmentNew = new Department(db);
+                        //     return departmentNew.fetchAll().then(department => {
+                        //         return department.map(d => {
+                        //             return { name: d.name, value: d.id }
+                        //         })
+                        //     })
+                        // }
+                        // CREDIT TO MIN YANG MY TUTOR FOR THE BELOW CHOICES CODE
+                        choices: department => new Promise((resolve, reject) => {
+                            db.query(`SELECT dept_name FROM department`, (err, res) => {
+                                if (err) reject(err);
+                                resolve(res);
+                            });
+                        }).then(departments => departments.map(dept => dept.dept_name))
+                            .catch(err => {
+                                console.log(err);
+                            })
+                        
+                        // db.query(`SELECT dept_name FROM department`, (err, row) => {
+                        //     if (err) {
+                        //         console.log(err);
+                        //     }
+                        //     else {
+                        //         return(row);
+                        //     }})
                     },
-                    {
-                        type: 'input',
-                        name: 'add_salary',
-                        message: 'Please provide the new role salary in number format (no dollar sign, no commas) and include the decimal and two decimal places. (Required)',
-                        validate: salaryInput => {
-                            if (salaryInput) {
-                                return true;
-                            } else {
-                                console.log('Please enter the role salary!');
-                                return false;
-                            }
-                        }
-                    },
+                                    {
+                                        type: 'input',
+                                        name: 'add_role_title',
+                                        message: 'Please provide the new role title. (Required)',
+                                        validate: roleInput => {
+                                            if (roleInput) {
+                                                return true;
+                                            } else {
+                                                console.log('Please enter the role title!');
+                                                return false;
+                                            }
+                                        }
+                                    },
+                                    {
+                                        type: 'input',
+                                        name: 'add_salary',
+                                        message: 'Please provide the new role salary in number format (no dollar sign, no commas) and include the decimal and two decimal places. (Required)',
+                                        validate: salaryInput => {
+                                            if (salaryInput) {
+                                                return true;
+                                            } else {
+                                                console.log('Please enter the role salary!');
+                                                return false;
+                                            }
+                                        },
+                                    },
+                                
                 ])
                     .then(addRoleName => {
                         db.query(`INSERT INTO roles (role_title, salary) VALUES ('${addRoleName.add_role_title}', '${addRoleName.add_salary}');`, (err, row) => {
@@ -167,8 +200,10 @@ const promptUser = () => {
                             console.log(row);
                             promptUser();
                         });
-                    });
-
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             }
             if (choicesData.action === 'Add an employee') {
                 inquirer.prompt([
