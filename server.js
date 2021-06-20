@@ -11,7 +11,7 @@ const db = mysql.createConnection(
         // Your MySQL username,
         user: 'root',
         // Your MySQL password
-        password: 'Sutrotowerpw123!',
+        password: '',
         database: 'roster'
     },
     console.log('Connected to the roster database.')
