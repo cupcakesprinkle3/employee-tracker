@@ -21,13 +21,14 @@ VALUES
     ('Chief Counsel', 100000.00, 8),
     ('People Business Partner I', 62000.00, 9);
 
-INSERT INTO employee (first_name, last_name, emp_role_id) 
+INSERT INTO employee (first_name, last_name, emp_role_id, manager_id) 
 VALUES 
-    ('Jane', 'Doe', 8), 
-    ('John', 'Smith', 7), 
-    ('Lil', 'Wayne', 6),
-    ('Dennis', 'Menace', 5),
-    ('Jeez', 'Louise', 4),
-    ('Michelle', 'B', 3),
-    ('Jess', 'Tencer', 2),
-    ('Salima', 'Gillmore', 1);
+    ('Jane', 'Doe', 8, 19), 
+    ('John', 'Smith', 7, 19), 
+    ('Lil', 'Wayne', 6, 20),
+    ('Dennis', 'Menace', 5, 19),
+    ('Jeez', 'Louise', 4, 19),
+    ('Michelle', 'B', 3, 19),
+    ('Jess', 'Tencer', 2, 19),
+    ('NULL', 'NULL', NULL, NULL),
+    ('Salima', 'Gillmore', 1, NULL);
